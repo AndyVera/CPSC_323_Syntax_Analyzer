@@ -20,12 +20,12 @@ int main (int argc, const char* argv[]){
   }
   checking_input_and_starting_iterator();
 
-  cout << "    Token(s)    |    Lexeme(s)    \n--------------------------------\n";
-  cout << "\nFirst time calling the Lexer!\n";
   Lexer();
-  cout << "\nSecond time calling the Lexer!\n";
   Lexer();
-  cout << "Almost Done\n";
+  Lexer();
+  Lexer();
+  Lexer();
+  
   closing_streams();
   cout << "Syntax Analyzer Done!!!\n";
 }

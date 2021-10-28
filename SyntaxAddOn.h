@@ -11,13 +11,14 @@ ifstream inputfile;
 ofstream outputfile;
 int current_state = 0;
 int previous_state = 0;
-string lexeme_string;
+string lexeme_string_source;
 string::iterator ptr;
 char lexeme_string_input;
+int index___ = 0;
 
 void change_stream_contents (const char* input, const char* output){
-  cout << "Inutfile is: " << input << "\n";
-  cout << "Outputfile is: " << output << "\n";
+  // cout << "Inutfile is: " << input << "\n";
+  // cout << "Outputfile is: " << output << "\n";
   inputfile.open(input);
   outputfile.open(output);
 }
@@ -36,14 +37,14 @@ int checking_proper_streams(){
 
 void checking_input_and_starting_iterator(){
 string lexeme_string_first ((istreambuf_iterator<char>(inputfile)), istreambuf_iterator<char>());
-lexeme_string = lexeme_string_first;
-cout << "\nWhat was acquiered from file is: " << lexeme_string << '\n';
-ptr = lexeme_string.begin();
+lexeme_string_source = lexeme_string_first;
+//cout << "\nWhat was acquiered from file is: " << lexeme_string_source << '\n';
+ptr = lexeme_string_source.begin();
 }
 
 string keywords[14] = { "true","function","integer","false",
 			            "boolean", "real","if",	"endif",
-			            "else",	"return","put",	"get","while"} ;
+			            "else",	"return","put",	"get","while", "for"} ;
 
 string separators[7] = { "}",		"{",		"(",		")",
 			",",	";"};
@@ -70,47 +71,49 @@ void Lexer() {
 
   DFSM[4][0] = 4; DFSM[4][1] = 3; DFSM[4][2] = 4; DFSM[4][3] = 3;
 
-  static string lexeme_string;
+  string lexeme_string;
 
-  while(*ptr != ' '){
+  while(*ptr != '\0'){
    lexeme_string_input = *ptr;
    //cout << "input: " << lexeme_string_input << "\n";
 
-    //starting state - frist input
+   //if(*ptr != ' '){
+    //State 0
     if(isalpha(lexeme_string_input) && current_state == 0 ){
-        current_state = DFSM[0][1];
-        lexeme_string += lexeme_string_input;
-        cout << "starting: " << lexeme_string << "\n";
-    }
-    else if(isdigit(lexeme_string_input) && current_state == 0 ){
-        current_state = DFSM[0][2];
-        lexeme_string += lexeme_string_input;
-        cout << "starting num: " << lexeme_string << "\n"<< "added once\n";
-    }
-    else if((lexeme_string_input == '.') && current_state == 0 ){
-        current_state = DFSM[0][3];
-    }
-
-    //second input
-    else if (isalpha(lexeme_string_input) && current_state == 1){
-        previous_state = current_state;
         current_state = DFSM[current_state][1];
         lexeme_string += lexeme_string_input;
-        cout << "so far: " << lexeme_string << '\n';
+        //cout << "so far: " << lexeme_string << '\n';
+    }
+    else if(isdigit(lexeme_string_input) && current_state == 0 ){
+        current_state = DFSM[current_state][2];
+        lexeme_string += lexeme_string_input;
+        //cout << "so far: " << lexeme_string << '\n';
+    }
+    else if((lexeme_string_input == '.') && current_state == 0 ){
+        current_state = DFSM[current_state][3];
+    }
+
+    //State 1
+    else if (isalpha(lexeme_string_input) && current_state == 1){
+      //  previous_state = current_state;
+        current_state = DFSM[current_state][1];
+        lexeme_string += lexeme_string_input;
+        //cout << "so far: " << lexeme_string << '\n';
     }
 
     else if (isdigit(lexeme_string_input) && current_state == 1){
-        previous_state = current_state;
+      //  previous_state = current_state;
         current_state = DFSM[current_state][2];
         lexeme_string += lexeme_string_input;
-        cout << "so far: " << lexeme_string << '\n';
+        //cout << "so far: " << lexeme_string << '\n';
 
     }
 
     else if(lexeme_string_input == '.' && current_state == 1){
-        previous_state = current_state;
+      //  previous_state = current_state;
         current_state = DFSM[current_state][3];
-        cout << "so far: " << lexeme_string << '\n';
+        lexeme_string += lexeme_string_input;
+        //cout << "so far: " << lexeme_string << '\n';
 
     }
 
@@ -122,44 +125,127 @@ void Lexer() {
     //     lexeme_string = '\0';
     //}
 
-    //third input
+    //State 2
     else if (isdigit(lexeme_string_input) && current_state == 2){
-        previous_state = current_state;
+        //previous_state = current_state;
         current_state = DFSM[current_state][2];
         lexeme_string += lexeme_string_input;
-        cout << "so far: " << lexeme_string << '\n';
+        //cout << "so far: " << lexeme_string << '\n';
     }
 
     else if (isalpha(lexeme_string_input) && current_state == 2){
         //cout << setw(16) << "Integer" << "|" << setw(17) << lexeme_string << '\n';
-        lexeme_string = '\0';
+        current_state = DFSM[current_state][1];
         lexeme_string += lexeme_string_input;
-        current_state = 0;
-        previous_state = 0;
+        //cout << "so far: " << lexeme_string << '\n';
     }
 
     else if(lexeme_string_input == '.' && current_state == 2){
-    previous_state = current_state;
+    //previous_state = current_state;
     current_state = DFSM[current_state][3];
     lexeme_string += lexeme_string_input;
-      cout << "so far: " << lexeme_string << '\n';
-}
+    //cout << "so far: " << lexeme_string << '\n';
+    }
 
+    // State 3
+    else if (isalpha(lexeme_string_input) && current_state == 3){
+      current_state = DFSM[current_state][1];
+      lexeme_string += lexeme_string_input;
+      //cout << "so far: " << lexeme_string << '\n';
+    }
 
+    else if (isdigit(lexeme_string_input) && current_state == 3){
+      current_state = DFSM[current_state][2];
+      lexeme_string += lexeme_string_input;
+      //cout << "so far: " << lexeme_string << '\n';
+    }
 
+    else if (lexeme_string_input == '.' && current_state == 3){
+    current_state = DFSM[current_state][3];
+    lexeme_string += lexeme_string_input;
+    //cout << "so far: " << lexeme_string << '\n';
+    }
 
+    //State 4
 
+    else if (isalpha(lexeme_string_input) && current_state == 4){
+      current_state = DFSM[current_state][1];
+      lexeme_string += lexeme_string_input;
+      //cout << "so far: " << lexeme_string << '\n';
+    }
+    else if (isdigit(lexeme_string_input) && current_state == 4){
+      current_state = DFSM[current_state][2];
+      lexeme_string += lexeme_string_input;
+      //cout << "so far: " << lexeme_string << '\n';
+    }
+    else if (lexeme_string_input == '.' && current_state == 4){
+      current_state = DFSM[current_state][3];
+      lexeme_string += lexeme_string_input;
+      //cout << "so far: " << lexeme_string << '\n';
+    }
 
+    if(*ptr == ' ' || *ptr == '\n'){
+      break;
+    }
 
     ++ptr;
+
   }
-  if ( *ptr == ' '){
+  //if ( *ptr == ' ' || *ptr == '\0'){
+
+    // cout << "\n\n";
+
+    if (current_state == 1){
+      // while (index___ < 14){
+      // //  cout << keywords[index___] << '\n';
+      //  cout <<"-" << lexeme_string << "-" << "\n";
+      // //  cout << "index__ for keywords: " << index___ << "\n\n";
+      //   if(keywords[index___] == lexeme_string){
+      //     cout << "Lexeme: " << setw(16) << left << lexeme_string << " Token: Keyword\n";
+      //     index___ = 0;
+      //     break;
+      //   }
+      //   index___++;
+      // }
+      // //cout << "Index: " <<index___ << '\n';
+      // if (index___ == 14){
+      //   index___ = 0;
+      //   cout << "Lexeme: " << setw(16) << left << lexeme_string << " Token: Identifier\n";
+      // }
+
+
+
+      for (int i = 0; i < 15; ++i){
+        if(keywords[i] == lexeme_string){
+          cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword\n";
+          break;
+        }
+        index___ = i + 1;
+      }
+
+      if (index___ == 15){
+        cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier\n";
+      }
+    }
+
+    if (current_state == 2){
+      cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer\n";
+
+    }
+
+    if (current_state == 3){
+      cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
+    }
+    if(current_state == 4){
+      cout << "Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real\n";
+
+    }
     current_state = 0;
     previous_state = 0;
     lexeme_string = '\0';
     ++ptr;
-  }
-
+  //}
+//}
 }
 
 
