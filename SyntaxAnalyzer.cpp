@@ -25,7 +25,12 @@ int main (int argc, const char* argv[]){
   Lexer();
   Lexer();
   Lexer();
-  
+  Lexer();
+  Lexer();
+  Lexer();
+  Lexer();
+  Lexer();
+
   closing_streams();
   cout << "Syntax Analyzer Done!!!\n";
 }

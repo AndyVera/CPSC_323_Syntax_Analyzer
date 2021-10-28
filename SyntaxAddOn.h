@@ -17,8 +17,6 @@ char lexeme_string_input;
 int index___ = 0;
 
 void change_stream_contents (const char* input, const char* output){
-  // cout << "Inutfile is: " << input << "\n";
-  // cout << "Outputfile is: " << output << "\n";
   inputfile.open(input);
   outputfile.open(output);
 }
@@ -38,7 +36,6 @@ int checking_proper_streams(){
 void checking_input_and_starting_iterator(){
 string lexeme_string_first ((istreambuf_iterator<char>(inputfile)), istreambuf_iterator<char>());
 lexeme_string_source = lexeme_string_first;
-//cout << "\nWhat was acquiered from file is: " << lexeme_string_source << '\n';
 ptr = lexeme_string_source.begin();
 }
 
@@ -46,12 +43,12 @@ string keywords[14] = { "true","function","integer","false",
 			            "boolean", "real","if",	"endif",
 			            "else",	"return","put",	"get","while", "for"} ;
 
-string separators[7] = { "}",		"{",		"(",		")",
+string separators[6] = { "}",		"{",		"(",		")",
 			",",	";"};
 
 string operators[11] = {"<=",	 "+",		"-", 	"*",
 			"/",		 ">",		"<",		"=>",
-			"!=",	 "=" };
+			"!=",	 "=", "==" };
 
 void closing_streams(){
     inputfile.close();
@@ -75,9 +72,7 @@ void Lexer() {
 
   while(*ptr != '\0'){
    lexeme_string_input = *ptr;
-   //cout << "input: " << lexeme_string_input << "\n";
 
-   //if(*ptr != ' '){
     //State 0
     if(isalpha(lexeme_string_input) && current_state == 0 ){
         current_state = DFSM[current_state][1];
@@ -100,6 +95,10 @@ void Lexer() {
         lexeme_string += lexeme_string_input;
         //cout << "so far: " << lexeme_string << '\n';
     }
+    else if (lexeme_string_input == '_' && current_state == 1){
+      current_state = DFSM[current_state][1];
+      lexeme_string += lexeme_string_input;
+    }
 
     else if (isdigit(lexeme_string_input) && current_state == 1){
       //  previous_state = current_state;
@@ -116,14 +115,6 @@ void Lexer() {
         //cout << "so far: " << lexeme_string << '\n';
 
     }
-
-
-    // else if (lexeme_string_input == ' ' && current_state == 1 && (lexeme_string.length() == 1)){
-    //     current_state = 0;
-    //     previous_state = 0;
-    //     cout << setw(16) << "Identifier" << "|" << setw(17) << lexeme_string << '\n';
-    //     lexeme_string = '\0';
-    //}
 
     //State 2
     else if (isdigit(lexeme_string_input) && current_state == 2){
@@ -184,68 +175,82 @@ void Lexer() {
       //cout << "so far: " << lexeme_string << '\n';
     }
 
+    //If its a white space, then stop lexer and identify lexeme
     if(*ptr == ' ' || *ptr == '\n'){
       break;
+    }
+
+    //If it is not a white space, letter, digit, or decimal point, then it can be an
+    //operator or separator
+    if(*ptr != ' ' && *ptr != '\n' && *ptr != '.' && isdigit(lexeme_string_input) == 0 && isalpha(lexeme_string_input) == 0 ){
+      lexeme_string += lexeme_string_input;
     }
 
     ++ptr;
 
   }
-  //if ( *ptr == ' ' || *ptr == '\0'){
 
-    // cout << "\n\n";
 
+
+    //checks if its a Operator or Separator
+    if(current_state == 0 ){
+      int sep_index, op_index;
+      for(int i = 0; i <= 6; ++i){
+        if( separators[i] == lexeme_string){
+          outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Separator\n";
+          break;
+        }
+        sep_index = i + 1;
+      }
+      for(int j = 0; j <= 10; ++j){
+        if(operators[j] == lexeme_string){
+          outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Operator\n";
+          break;
+        }
+        op_index = j + 1;
+      }
+      if (op_index == 11 && sep_index == 7){
+          outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
+      }
+
+  }
+
+    //First checks if its a Keyword, if not then its an Identifier
     if (current_state == 1){
-      // while (index___ < 14){
-      // //  cout << keywords[index___] << '\n';
-      //  cout <<"-" << lexeme_string << "-" << "\n";
-      // //  cout << "index__ for keywords: " << index___ << "\n\n";
-      //   if(keywords[index___] == lexeme_string){
-      //     cout << "Lexeme: " << setw(16) << left << lexeme_string << " Token: Keyword\n";
-      //     index___ = 0;
-      //     break;
-      //   }
-      //   index___++;
-      // }
-      // //cout << "Index: " <<index___ << '\n';
-      // if (index___ == 14){
-      //   index___ = 0;
-      //   cout << "Lexeme: " << setw(16) << left << lexeme_string << " Token: Identifier\n";
-      // }
-
-
 
       for (int i = 0; i < 15; ++i){
         if(keywords[i] == lexeme_string){
-          cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword\n";
+          outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword\n";
           break;
         }
         index___ = i + 1;
       }
 
       if (index___ == 15){
-        cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier\n";
+        outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier\n";
       }
     }
 
+    //Checks if its an integer
     if (current_state == 2){
-      cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer\n";
+      outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer\n";
 
     }
 
+    //Checks if its an Invalid token
     if (current_state == 3){
-      cout << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
+      outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
     }
+
+    //Checks if its a Real
     if(current_state == 4){
-      cout << "Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real\n";
+      outputfile << "Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real\n";
 
     }
+
+    //Resets values for next lexeme
     current_state = 0;
-    previous_state = 0;
-    lexeme_string = '\0';
     ++ptr;
-  //}
-//}
 }
 
 
