@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "SyntaxAddOn.h"
+#include "SyntaxAnalyzerFunctions.h"
 
 using namespace std;
 
@@ -20,16 +21,20 @@ int main (int argc, const char* argv[]){
   }
   checking_input_and_starting_iterator();
 
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
-  Lexer();
+  //struct that holds both, the lexeme and token type, to be referecenced and used in the Syntax Analyzer
+  // Lexeme a;
+  // Lexeme b;
+
+  TestPrint_Start();
+  TestPrint_End();
+
+  // a = Lexer();
+  // cout << "Lexeme: " << a.lexeme_word << " Token: " << a.lexeme_token << "\n";
+  // b = Lexer();
+  // cout << "Lexeme: " << b.lexeme_word << " Token: " << b.lexeme_token << "\n";
+
+  Rat21F();
+
 
   closing_streams();
   cout << "Syntax Analyzer Done!!!\n";

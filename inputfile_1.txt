@@ -1,9 +1,1 @@
-for
-( )
-==
-000.000
-Andy_Vera
-Andy
-301
-$
-%
+function Andy ( number integer , number2 integer )

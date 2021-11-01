@@ -16,6 +16,11 @@ string::iterator ptr;
 char lexeme_string_input;
 int index___ = 0;
 
+struct Lexeme {
+  string lexeme_word;
+  string lexeme_token;
+};
+
 void change_stream_contents (const char* input, const char* output){
   inputfile.open(input);
   outputfile.open(output);
@@ -37,14 +42,14 @@ void checking_input_and_starting_iterator(){
 string lexeme_string_first ((istreambuf_iterator<char>(inputfile)), istreambuf_iterator<char>());
 lexeme_string_source = lexeme_string_first;
 ptr = lexeme_string_source.begin();
+
+outputfile <<"----------Lexeme---------|---------Token---------\n";
 }
 
-string keywords[14] = { "true","function","integer","false",
-			            "boolean", "real","if",	"endif",
-			            "else",	"return","put",	"get","while", "for"} ;
+string keywords[13] = {"function", "integer", "boolean", "real", "if", "endif", "else", "return", "put", "get", "while", "true", "false"} ;
 
-string separators[6] = { "}",		"{",		"(",		")",
-			",",	";"};
+string separators[7] = { "}",		"{",		"(",		")",
+			",",	";", "#"};
 
 string operators[11] = {"<=",	 "+",		"-", 	"*",
 			"/",		 ">",		"<",		"=>",
@@ -55,7 +60,7 @@ void closing_streams(){
     outputfile.close();
 }
 
-void Lexer() {
+Lexeme Lexer() {
 
   int DFSM[5][4];
   DFSM[0][0] = 0; DFSM[0][1] = 1; DFSM[0][2] = 2; DFSM[0][3] = 3;
@@ -69,6 +74,7 @@ void Lexer() {
   DFSM[4][0] = 4; DFSM[4][1] = 3; DFSM[4][2] = 4; DFSM[4][3] = 3;
 
   string lexeme_string;
+  Lexeme lexeme_output;
 
   while(*ptr != '\0'){
    lexeme_string_input = *ptr;
@@ -198,6 +204,8 @@ void Lexer() {
       for(int i = 0; i <= 6; ++i){
         if( separators[i] == lexeme_string){
           outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Separator\n";
+          lexeme_output.lexeme_word = lexeme_string;
+          lexeme_output.lexeme_token = "Separator";
           break;
         }
         sep_index = i + 1;
@@ -205,12 +213,16 @@ void Lexer() {
       for(int j = 0; j <= 10; ++j){
         if(operators[j] == lexeme_string){
           outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Operator\n";
+          lexeme_output.lexeme_word = lexeme_string;
+          lexeme_output.lexeme_token = "Operator";
           break;
         }
         op_index = j + 1;
       }
       if (op_index == 11 && sep_index == 7){
           outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
+          lexeme_output.lexeme_word = lexeme_string;
+          lexeme_output.lexeme_token = "Invalid";
       }
 
   }
@@ -218,41 +230,64 @@ void Lexer() {
     //First checks if its a Keyword, if not then its an Identifier
     if (current_state == 1){
 
-      for (int i = 0; i < 15; ++i){
+      for (int i = 0; i < 14; ++i){
         if(keywords[i] == lexeme_string){
           outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword\n";
+          lexeme_output.lexeme_word = lexeme_string;
+          lexeme_output.lexeme_token = "Keyword";
           break;
         }
         index___ = i + 1;
       }
 
-      if (index___ == 15){
+      if (index___ == 14){
         outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier\n";
+        lexeme_output.lexeme_word = lexeme_string;
+        lexeme_output.lexeme_token = "Identifier";
       }
     }
 
     //Checks if its an integer
     if (current_state == 2){
       outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer\n";
+      lexeme_output.lexeme_word = lexeme_string;
+      lexeme_output.lexeme_token = "Integer";
 
     }
 
     //Checks if its an Invalid token
     if (current_state == 3){
       outputfile << "Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid\n";
+      lexeme_output.lexeme_word = lexeme_string;
+      lexeme_output.lexeme_token = "Invalid";
     }
 
     //Checks if its a Real
     if(current_state == 4){
       outputfile << "Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real\n";
+      lexeme_output.lexeme_word = lexeme_string;
+      lexeme_output.lexeme_token = "Real";
 
     }
 
     //Resets values for next lexeme
     current_state = 0;
     ++ptr;
+
+    return lexeme_output;
 }
 
 
 
 #endif /*SyntaxAddOn_h*/
+
+//for
+// Andy
+// ==
+// 000.000
+// Andy_Vera
+// Andy
+// 301
+// $
+// %
+// =>
