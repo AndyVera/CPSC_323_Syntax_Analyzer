@@ -16,6 +16,7 @@ Lexeme temp5;
 int second_time = 0;
 int holding_something = 0;
 int holding_something2 = 0;
+int holding_something3 = 0;
 
 void TestPrint_Start(){
   cout << "The Syntax Functions are going to be declared\n";
@@ -239,11 +240,11 @@ void Statement(){
     }
     else if (a.lexeme_word == "return"){
       cout << a.lexeme_word << " ";
-
       Return();
     }
     else if (a.lexeme_word == "put"){
-      //Expression();
+      cout << a.lexeme_word << " ";
+      Print();
     }
     else if (a.lexeme_word == "get"){
       cout << a.lexeme_word << " ";
@@ -383,6 +384,7 @@ void Expression_prime (){
   else {
     temp = a;
     holding_something = 1;
+    holding_something3 = 1;
   }
 }
 
@@ -462,6 +464,24 @@ void Return(){
     holding_something2 = 1;
     temp5 = a;
     Expression();
+  }
+}
+
+void Print(){
+  a = Lexer();
+
+  if (a.lexeme_word == "("){
+    cout << a.lexeme_word << " ";
+    Expression();
+
+
+    if (a.lexeme_word == ")"){
+      cout << a.lexeme_word << " ";
+      a = Lexer();
+      if ( a.lexeme_word == ";"){
+        cout << a.lexeme_word << " ";
+      }
+    }
   }
 }
 
