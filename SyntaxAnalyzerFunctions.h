@@ -17,6 +17,8 @@ int second_time = 0;
 int holding_something = 0;
 int holding_something2 = 0;
 int holding_something3 = 0;
+int scanned_used = 0;
+int return_semi_used = 0;
 
 void TestPrint_Start(){
   cout << "The Syntax Functions are going to be declared\n";
@@ -210,6 +212,11 @@ void Body(){
   if ( a.lexeme_word == "{"){
     cout << a.lexeme_word << " ";
     Statement_List();
+
+    a = Lexer();
+      if (a.lexeme_word == "}"){
+        cout << a.lexeme_word << " ";
+      }
   }
   else {
     cout << "What was expected was a '{'\n";
@@ -252,8 +259,7 @@ void Statement(){
     }
     else if (a.lexeme_word == "while"){
       cout << a.lexeme_word << " ";
-
-      //While();
+      While();
     }
     else if (a.lexeme_word != "{" && a.lexeme_token != "Identifier" && a.lexeme_word != "if" && a.lexeme_word != "return" && a.lexeme_word != "put" && a.lexeme_word != "get" && a.lexeme_word != "while" ){
       cout << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
@@ -446,28 +452,10 @@ void If_prime(){
   else if (a.lexeme_word == "else"){
     cout << a.lexeme_word << " ";
     Statement();
-// void Print() {
-//   a = Lexer();
-//
-//   if (a.lexeme_word == "("){
-//     cout << a.lexeme_word << " ";
-//     Expression();
-//
-//     if (holding_something == 1){
-//       a = temp4;
-//       holding_something = 0;
-//     }
-//     else if (holding_something3 == 1){
-//       a = temp;
-//       holding_something3 = 0;
-//     }
-//
-//     //cout << "\nTesting Print: " << a.lexeme_word << "\n";
-//     if ( a.lexeme_word == ")"){
-//       cout << a.lexeme_word << " ";
-//     }
-//   }
-// }
+
+    if (scanned_used == 1){
+    a = Lexer();
+    }
     if (a.lexeme_word == "endif"){
       cout << a.lexeme_word << " ";
     }
@@ -484,6 +472,11 @@ void Return(){
     holding_something2 = 1;
     temp5 = a;
     Expression();
+  //  a = Lexer();
+    if ( a.lexeme_word == ";"){
+      cout << a.lexeme_word << " ";
+
+    }
   }
 }
 
@@ -516,6 +509,30 @@ void Scan(){
     if (a.lexeme_word == ")"){
       cout << a.lexeme_word << " ";
       a = Lexer();
+      if ( a.lexeme_word == ";"){
+        cout << a.lexeme_word << " ";
+        scanned_used = 1;
+      }
+    }
+  }
+}
+
+void While(){
+  a = Lexer();
+
+  if(a.lexeme_word == "("){
+    cout << a.lexeme_word << " ";
+    Condition();
+
+  //May or May Not Need It
+  //  a = Lexer();
+
+    if(a.lexeme_word == ")"){
+      cout << a.lexeme_word << " ";
+      Statement();
+
+      
+
       if ( a.lexeme_word == ";"){
         cout << a.lexeme_word << " ";
       }
