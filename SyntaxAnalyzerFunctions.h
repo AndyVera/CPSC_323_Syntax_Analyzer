@@ -12,8 +12,10 @@ Lexeme temp;
 Lexeme temp2;
 Lexeme temp3;
 Lexeme temp4;
+Lexeme temp5;
 int second_time = 0;
 int holding_something = 0;
+int holding_something2 = 0;
 
 void TestPrint_Start(){
   cout << "The Syntax Functions are going to be declared\n";
@@ -238,7 +240,7 @@ void Statement(){
     else if (a.lexeme_word == "return"){
       cout << a.lexeme_word << " ";
 
-      //Return();
+      Return();
     }
     else if (a.lexeme_word == "put"){
       //Expression();
@@ -301,8 +303,13 @@ void Factor(){
 }
 
 void Primary(){
+  if (holding_something2 == 1){
+    a = temp5;
+    holding_something2 = 0;
+  }
+  else{
   a = Lexer();
-
+  }
   //cout << "\nTesting: " << a.lexeme_word << "\n";
   if (a.lexeme_token == "Integer"){
     cout << a.lexeme_word << " ";
@@ -445,6 +452,18 @@ void If_prime(){
   }
 }
 
+void Return(){
+  a = Lexer();
+
+  if( a.lexeme_word == ";"){
+    cout << a.lexeme_word << " ";
+  }
+  else if ( a.lexeme_word != ";"){
+    holding_something2 = 1;
+    temp5 = a;
+    Expression();
+  }
+}
 
 
 
