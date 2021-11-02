@@ -11,7 +11,9 @@ Lexeme a;
 Lexeme temp;
 Lexeme temp2;
 Lexeme temp3;
+Lexeme temp4;
 int second_time = 0;
+int holding_something = 0;
 
 void TestPrint_Start(){
   cout << "The Syntax Functions are going to be declared\n";
@@ -179,6 +181,8 @@ void Decleration_list(){
 
 void Decleration(){
   //cout << "Working #10\n";
+    cout << "\n";
+
   Qualifier();
   IDs();
   a = Lexer();
@@ -215,6 +219,8 @@ void Statement_List(){
 
 void Statement(){
   a = Lexer();
+
+  //cout << "\ntesting: " << a.lexeme_word << "\n";
     if (a.lexeme_word == "{"){
       cout << a.lexeme_word << " ";
       Compound();
@@ -247,7 +253,7 @@ void Statement(){
 
       //While();
     }
-    else {
+    else if (a.lexeme_word != "{" && a.lexeme_token != "Identifier" && a.lexeme_word != "if" && a.lexeme_word != "return" && a.lexeme_word != "put" && a.lexeme_word != "get" && a.lexeme_word != "while" ){
       cout << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
 
     }
@@ -262,10 +268,114 @@ void Assign() {
 
   if (a.lexeme_word == "="){
     cout << a.lexeme_word << " ";
-    //xpression();
+    Expression();
+
+    if (holding_something == 1){
+      a = temp;
+    }
+    else {
+      a = Lexer();
+    }
+    if ( a.lexeme_word == ";"){
+      cout << a.lexeme_word << " ";
+    }
+  }
+  else {
+    cout << "What was expected was a '='\n";
   }
 }
 
+void Expression(){
+  Term();
+  Expression_prime();
+}
+
+void Term(){
+  Factor();
+  Term_prime();
+}
+
+void Factor(){
+  Primary();
+}
+
+void Primary(){
+  a = Lexer();
+
+  //cout << "\nTesting: " << a.lexeme_word << "\n";
+  if (a.lexeme_token == "Integer"){
+    cout << a.lexeme_word << " ";
+  }
+  else if (a.lexeme_word == "("){
+    cout << a.lexeme_word << " ";
+    Expression();
+  }
+  else if (a.lexeme_token == "Real"){
+    cout << a.lexeme_word << " ";
+  }
+  else if ( a.lexeme_word == "true"){
+    cout << a.lexeme_word << " ";
+  }
+  else if ( a.lexeme_word == "false"){
+    cout << a.lexeme_word << " ";
+  }
+  else if (a.lexeme_token == "Identifier"){
+    cout << a.lexeme_word << " ";
+    a = Lexer();
+    holding_something = 1;
+    temp4 = a;
+    //cout << "\nTesting: " << a.lexeme_word << "\n";
+    if (a.lexeme_word == "("){
+      cout << a.lexeme_word << " ";
+      IDs();
+      a = Lexer();
+      if (a.lexeme_word == ")"){
+        cout << a.lexeme_word << " ";
+      }
+    }
+  }
+
+}
+
+void Term_prime(){
+  if (holding_something == 1){
+    a = temp3;
+  }
+  else {
+    a = Lexer();
+  }
+
+  if(a.lexeme_word == "*" || a.lexeme_word == "/"){
+    cout << a.lexeme_word << " ";
+    holding_something = 0;
+    Factor();
+    Term_prime();
+  }
+  else {
+    temp = a;
+    holding_something = 1;
+  }
+}
+
+void Expression_prime (){
+  if (holding_something == 1){
+    a = temp;
+  }
+  else {
+    a = Lexer();
+  }
+
+  if(a.lexeme_word == "+" || a.lexeme_word == "-"){
+    cout << a.lexeme_word << " " ;
+    holding_something = 0;
+    Term();
+    Expression_prime();
+  }
+  else {
+    temp = a;
+    holding_something = 1;
+  }
+}
 
 
 
