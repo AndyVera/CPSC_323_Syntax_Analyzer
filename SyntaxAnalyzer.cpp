@@ -37,5 +37,5 @@ int main (int argc, const char* argv[]){
 
 
   closing_streams();
-  cout << "Syntax Analyzer Done!!!\n";
+  cout << "\n\nSyntax Analyzer Done!!!\n";
 }
