@@ -248,8 +248,7 @@ void Statement(){
     }
     else if (a.lexeme_word == "get"){
       cout << a.lexeme_word << " ";
-
-      //Scan();
+      Scan();
     }
     else if (a.lexeme_word == "while"){
       cout << a.lexeme_word << " ";
@@ -447,7 +446,28 @@ void If_prime(){
   else if (a.lexeme_word == "else"){
     cout << a.lexeme_word << " ";
     Statement();
-
+// void Print() {
+//   a = Lexer();
+//
+//   if (a.lexeme_word == "("){
+//     cout << a.lexeme_word << " ";
+//     Expression();
+//
+//     if (holding_something == 1){
+//       a = temp4;
+//       holding_something = 0;
+//     }
+//     else if (holding_something3 == 1){
+//       a = temp;
+//       holding_something3 = 0;
+//     }
+//
+//     //cout << "\nTesting Print: " << a.lexeme_word << "\n";
+//     if ( a.lexeme_word == ")"){
+//       cout << a.lexeme_word << " ";
+//     }
+//   }
+// }
     if (a.lexeme_word == "endif"){
       cout << a.lexeme_word << " ";
     }
@@ -475,6 +495,24 @@ void Print(){
     Expression();
 
 
+    if (a.lexeme_word == ")"){
+      cout << a.lexeme_word << " ";
+      a = Lexer();
+      if ( a.lexeme_word == ";"){
+        cout << a.lexeme_word << " ";
+      }
+    }
+  }
+}
+
+void Scan(){
+  a = Lexer();
+
+  if (a.lexeme_word == "("){
+    cout << a.lexeme_word << " ";
+    IDs();
+
+    a = Lexer();
     if (a.lexeme_word == ")"){
       cout << a.lexeme_word << " ";
       a = Lexer();
