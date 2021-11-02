@@ -233,7 +233,7 @@ void Statement(){
     else if (a.lexeme_word == "if"){
       cout << a.lexeme_word << " ";
 
-      //If();
+      If();
     }
     else if (a.lexeme_word == "return"){
       cout << a.lexeme_word << " ";
@@ -272,6 +272,7 @@ void Assign() {
 
     if (holding_something == 1){
       a = temp;
+      holding_something = 0;
     }
     else {
       a = Lexer();
@@ -340,11 +341,12 @@ void Primary(){
 void Term_prime(){
   if (holding_something == 1){
     a = temp3;
+    holding_something = 0;
   }
   else {
     a = Lexer();
   }
-
+//cout << "\nTesting #12: " << a.lexeme_word << "\n";
   if(a.lexeme_word == "*" || a.lexeme_word == "/"){
     cout << a.lexeme_word << " ";
     holding_something = 0;
@@ -374,6 +376,72 @@ void Expression_prime (){
   else {
     temp = a;
     holding_something = 1;
+  }
+}
+
+void If(){
+  a = Lexer();
+
+//cout << "\nTesting: " << a.lexeme_word << "\n";
+  if (a.lexeme_word == "("){
+    cout << a.lexeme_word << " ";
+    Condition();
+
+    //a = Lexer(); //NOTE: MAY OR MAY NOT NEED IT)
+
+    //This if statement is for when its another Identifier after the relop
+    // if(holding_something == 1){
+    //   a = temp4;
+    //   holding_something = 0;
+    // }
+
+    if (a.lexeme_word == ")"){
+      cout << a.lexeme_word << " ";
+      Statement();
+      If_prime();
+
+    }
+  }
+}
+
+void Condition(){
+  Expression();
+  Relop();
+  Expression();
+}
+
+void Relop(){
+  if (holding_something == 1 ) {
+    a = temp4;
+    holding_something = 0;
+  }
+  else{
+    a = Lexer();
+  }
+
+  //NOTE: WITHINT THE CONDITION STATEMENT, EVERYTHING NEEDS TO BE ONE SPACE APART
+
+  if (a.lexeme_word == "==" || a.lexeme_word == "!=" || a.lexeme_word == ">" || a.lexeme_word == "<" || a.lexeme_word == "<=" || a.lexeme_word == "=>") {
+    cout << a.lexeme_word << " ";
+
+  }
+}
+
+void If_prime(){
+
+  a = Lexer();
+
+  if(a.lexeme_word == "endif"){
+    cout << a.lexeme_word << " ";
+  }
+
+  else if (a.lexeme_word == "else"){
+    cout << a.lexeme_word << " ";
+    Statement();
+
+    if (a.lexeme_word == "endif"){
+      cout << a.lexeme_word << " ";
+    }
   }
 }
 
