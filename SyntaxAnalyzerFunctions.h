@@ -7,22 +7,22 @@
 #ifndef SyntaxAnalyzerFunctions_h
 #define SyntaxAnalyzerFunctions_h
 
+
 Lexeme a;
 Lexeme temp;
 Lexeme temp2;
 Lexeme temp3;
 Lexeme temp4;
 Lexeme temp5;
+
 int second_time = 0;
 int holding_something = 0;
 int holding_something2 = 0;
 int holding_something3 = 0;
+int holding_something4 = 0;
 int scanned_used = 0;
 int return_semi_used = 0;
 
-void TestPrint_Start(){
-  cout << "The Syntax Functions are going to be declared\n";
-}
 
 //Function Definitions
 void Rat21F ();
@@ -57,13 +57,29 @@ void Term_prime ();
 void Factor ();
 void Primary ();
 
-void TestPrint_End(){
-  cout <<  "The Syntax Rules have been declared\n\n";
-}
 
 //The Syntax Functions implemented
+
+//
 void Rat21F (){
   Opt_Function_Definitions();
+
+  a = Lexer();
+  //cout << "\nTesting what lexer is: " << a.lexeme_word << "\n";
+  if ( a.lexeme_word == "#"){
+    cout << a.lexeme_word << " ";
+    Opt_Decleration_List();
+    Statement_List();
+
+    a = Lexer();
+    if ( a.lexeme_word == "#"){
+      cout << a.lexeme_word << " ";
+    }
+  }
+  else {
+    cout << "What is expected is a '#'\n";
+  }
+
 
 }
 
@@ -148,6 +164,8 @@ void Parameter(){
 void IDs(){
     a = Lexer();
 
+    // cout << "\nTesting IDs output: " << ""
+
   if (a.lexeme_token == "Identifier"){
       cout << a.lexeme_word << " ";
   }
@@ -190,6 +208,7 @@ void Decleration(){
 
   Qualifier();
   IDs();
+  second_time = 0;
   a = Lexer();
   if( a.lexeme_word == ";"){
     cout << a.lexeme_word << " ";
@@ -202,6 +221,8 @@ void Decleration(){
     }
     else {
       temp = a;
+      holding_something4 = 1;
+      //cout << "\nTesting what temp is: " << temp.lexeme_word << "\n";
     }
   }
 }
@@ -228,7 +249,13 @@ void Statement_List(){
 }
 
 void Statement(){
+  if (holding_something4 == 1){
+    a = temp;
+    holding_something4 = 0 ;
+  }
+  else{
   a = Lexer();
+}
 
   //cout << "\ntesting: " << a.lexeme_word << "\n";
     if (a.lexeme_word == "{"){
@@ -531,7 +558,7 @@ void While(){
       cout << a.lexeme_word << " ";
       Statement();
 
-      
+
 
       if ( a.lexeme_word == ";"){
         cout << a.lexeme_word << " ";
