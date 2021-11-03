@@ -65,19 +65,22 @@ void Rat21F (){
   Opt_Function_Definitions();
 
   a = Lexer();
-  //cout << "\nTesting what lexer is: " << a.lexeme_word << "\n";
+  ////cout << "\nTesting what lexer is: " << a.lexeme_word << "\n";
   if ( a.lexeme_word == "#"){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Opt_Decleration_List();
     Statement_List();
 
     a = Lexer();
     if ( a.lexeme_word == "#"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
+    }
+    else {
+      outputfile << "What was expected was a #\n";
     }
   }
   else {
-    cout << "What is expected is a '#'\n";
+    //cout << "What is expected is a '#'\n";
   }
 
 
@@ -95,48 +98,54 @@ void Function() {
  a = Lexer();
 
   if (a.lexeme_word == "function"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Opt Function Definitions> ::= <Function Definitions>  |  <Empty>\n";
+    outputfile << "<Function Definitions> ::= <Function> | <Function> <Function Definitions>\n";
+    outputfile << "function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+    //cout << a.lexeme_word << " ";
     a = Lexer();
 
     //Inner Loop 2
     if (a.lexeme_token == "Identifier"){
-      cout << a.lexeme_word << " ";
+      outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+      //cout << a.lexeme_word << " ";
       a = Lexer();
 
       //Inner Loop 1
       if (a.lexeme_word == "("){
-        cout << a.lexeme_word << " ";
+        outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+        //cout << a.lexeme_word << " ";
         Opt_Parameter_List();
 
 
         a = temp;
-        //cout << "\nlexeme after coming from Opt_Parameter_List is: " << a.lexeme_word << "--\n";
+        ////cout << "\nlexeme after coming from Opt_Parameter_List is: " << a.lexeme_word << "--\n";
 
         if ( a.lexeme_word == ")"){
-          cout << a.lexeme_word << " ";
+          outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+          //cout << a.lexeme_word << " ";
           Opt_Decleration_List();
 
           Body();
         }
         else {
-          cout << "What was expected was a ')'\n";
+          outputfile << "What was expected was a ')'\n";
         }
       }
       else {
-        cout << "What was expected is a '('\n";
+        outputfile << "What was expected is a '('\n";
       }
       //End of Inner Loop 1
 
 
     }
     else {
-      cout << "What was expected is an 'Identifier'\n";
+      outputfile << "What was expected is an 'Identifier'\n";
     }
     //End of Inner Loop 2
   }
 
   else {
-    cout << "What was expected was the keyword 'function'\n";
+    outputfile << "What was expected was the keyword 'function'\n";
   }
 }
 
@@ -151,7 +160,7 @@ void Parameter_List(){
     if (a.lexeme_word == ")");
     temp = a;
   if( a.lexeme_word == ","){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Parameter_List();
   }
 }
@@ -159,6 +168,9 @@ void Parameter_List(){
 void Parameter(){
   IDs();
   Qualifier();
+  outputfile << "<Opt Parameter List> ::=  <Parameter List>    |     <Empty>\n";
+  outputfile << "<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>\n";
+  outputfile << "<Parameter> ::=  <IDs >  <Qualifier\n\n";
 }
 
 void IDs(){
@@ -167,11 +179,12 @@ void IDs(){
     // cout << "\nTesting IDs output: " << ""
 
   if (a.lexeme_token == "Identifier"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<IDs> ::=     <Identifier>    | <Identifier>, <IDs> \n";
+      //cout << a.lexeme_word << " ";
   }
 
   else {
-    cout << "What was expected is an 'Identifier'\n";
+    outputfile << "What was expected is an 'Identifier'\n\n";
   }
 }
 void Qualifier(){
@@ -185,10 +198,11 @@ void Qualifier(){
   }
 
   if (a.lexeme_word == "integer" || a.lexeme_word == "boolean" || a.lexeme_word == "real"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Qualifier> ::= integer    |    boolean    |  real\n\n";
+    //cout << a.lexeme_word << " ";
   }
   else {
-    cout << "What was expected was either an 'integer', 'boolean', or 'real'\n";
+    outputfile << "What was expected was either an 'integer', 'boolean', or 'real'\n";
   }
 }
 
@@ -204,14 +218,18 @@ void Decleration_list(){
 
 void Decleration(){
   //cout << "Working #10\n";
-    cout << "\n";
+    //cout << "\n";
 
   Qualifier();
   IDs();
+  outputfile << "<Opt Declaration List> ::= <Declaration List>   |    <Empty>\n";
+  outputfile << "<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>\n";
+  outputfile << "<Declaration> ::=   <Qualifier > <IDs>\n\n";
+
   second_time = 0;
   a = Lexer();
   if( a.lexeme_word == ";"){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     a = Lexer();
 
     if (a.lexeme_token == "Keyword" ){
@@ -222,25 +240,32 @@ void Decleration(){
     else {
       temp = a;
       holding_something4 = 1;
-      //cout << "\nTesting what temp is: " << temp.lexeme_word << "\n";
+      ////cout << "\nTesting what temp is: " << temp.lexeme_word << "\n";
     }
+  }
+  else {
+    outputfile << "What was expected was a ';'\n";
   }
 }
 
 void Body(){
   a = temp;
-  //cout << "\nTesting: " << a.lexeme_word << "\n";
+  ////cout << "\nTesting: " << a.lexeme_word << "\n";
   if ( a.lexeme_word == "{"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Body>  ::=  {  < Statement List>  }\n\n";
+    //cout << a.lexeme_word << " ";
     Statement_List();
 
     a = Lexer();
       if (a.lexeme_word == "}"){
-        cout << a.lexeme_word << " ";
+        //cout << a.lexeme_word << " ";
+      }
+      else {
+        outputfile << "What was expected was a '}'\n";
       }
   }
   else {
-    cout << "What was expected was a '{'\n";
+    outputfile << "What was expected was a '{'\n";
   }
 }
 
@@ -257,44 +282,50 @@ void Statement(){
   a = Lexer();
 }
 
-  //cout << "\ntesting: " << a.lexeme_word << "\n";
+  ////cout << "\ntesting: " << a.lexeme_word << "\n";
     if (a.lexeme_word == "{"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       Compound();
     }
     else if (a.lexeme_token == "Identifier"){
-      cout << a.lexeme_word << " ";
-
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       Assign();
     }
     else if (a.lexeme_word == "if"){
-      cout << a.lexeme_word << " ";
-
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       If();
     }
     else if (a.lexeme_word == "return"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       Return();
     }
     else if (a.lexeme_word == "put"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       Print();
     }
     else if (a.lexeme_word == "get"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       Scan();
     }
     else if (a.lexeme_word == "while"){
-      cout << a.lexeme_word << " ";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      //cout << a.lexeme_word << " ";
       While();
     }
     else if (a.lexeme_word != "{" && a.lexeme_token != "Identifier" && a.lexeme_word != "if" && a.lexeme_word != "return" && a.lexeme_word != "put" && a.lexeme_word != "get" && a.lexeme_word != "while" ){
-      cout << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
+      outputfile << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
 
     }
 }
 
 void Compound(){
+  outputfile << "<Compound> ::=   {  <Statement List>  }\n\n";
   Statement_List();
 }
 
@@ -302,7 +333,8 @@ void Assign() {
   a = Lexer();
 
   if (a.lexeme_word == "="){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Assign> ::=     <Identifier> = <Expression>\n\n";
+    //cout << a.lexeme_word << " ";
     Expression();
 
     if (holding_something == 1){
@@ -313,11 +345,14 @@ void Assign() {
       a = Lexer();
     }
     if ( a.lexeme_word == ";"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
+    }
+    else {
+      outputfile << "what was expected was an ';'\n";
     }
   }
   else {
-    cout << "What was expected was a '='\n";
+    outputfile << "What was expected was a '='\n";
   }
 }
 
@@ -345,35 +380,62 @@ void Primary(){
   }
   //cout << "\nTesting: " << a.lexeme_word << "\n";
   if (a.lexeme_token == "Integer"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
   }
   else if (a.lexeme_word == "("){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
     Expression();
   }
   else if (a.lexeme_token == "Real"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
   }
   else if ( a.lexeme_word == "true"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
   }
   else if ( a.lexeme_word == "false"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
   }
   else if (a.lexeme_token == "Identifier"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Factor> ::= <Primary>\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    //cout << a.lexeme_word << " ";
     a = Lexer();
     holding_something = 1;
     temp4 = a;
     //cout << "\nTesting: " << a.lexeme_word << "\n";
     if (a.lexeme_word == "("){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
       IDs();
       a = Lexer();
       if (a.lexeme_word == ")"){
-        cout << a.lexeme_word << " ";
+        //cout << a.lexeme_word << " ";
       }
     }
+  }
+  else {
+    outputfile << "What was expected are either 'Integer', '(', 'Real', 'true', 'false', or an 'Identifier'\n";
   }
 
 }
@@ -388,7 +450,10 @@ void Term_prime(){
   }
 //cout << "\nTesting #12: " << a.lexeme_word << "\n";
   if(a.lexeme_word == "*" || a.lexeme_word == "/"){
-    cout << a.lexeme_word << " ";
+    outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
+    outputfile << "<Term’> ::= * <Factor> <Term’> | / <Factor> <Term’> | ε\n\n";
+    //cout << a.lexeme_word << " ";
     holding_something = 0;
     Factor();
     Term_prime();
@@ -408,7 +473,9 @@ void Expression_prime (){
   }
 
   if(a.lexeme_word == "+" || a.lexeme_word == "-"){
-    cout << a.lexeme_word << " " ;
+    outputfile << "Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
+    outputfile << "<Expression’> ::= + <Term> <Expression’> | -  <Term> <Expression’> | ε\n\n";
+    //cout << a.lexeme_word << " " ;
     holding_something = 0;
     Term();
     Expression_prime();
@@ -425,7 +492,7 @@ void If(){
 
 //cout << "\nTesting: " << a.lexeme_word << "\n";
   if (a.lexeme_word == "("){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Condition();
 
     //a = Lexer(); //NOTE: MAY OR MAY NOT NEED IT)
@@ -437,15 +504,22 @@ void If(){
     // }
 
     if (a.lexeme_word == ")"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
       Statement();
       If_prime();
 
     }
+    else {
+      outputfile << "What was expected was ')'\n";
+    }
+  }
+  else {
+    outputfile << "What was expected was '('\n";
   }
 }
 
 void Condition(){
+  outputfile << "<Condition> ::=     <Expression>  <Relop>   <Expression>\n\n";
   Expression();
   Relop();
   Expression();
@@ -463,8 +537,12 @@ void Relop(){
   //NOTE: WITHINT THE CONDITION STATEMENT, EVERYTHING NEEDS TO BE ONE SPACE APART
 
   if (a.lexeme_word == "==" || a.lexeme_word == "!=" || a.lexeme_word == ">" || a.lexeme_word == "<" || a.lexeme_word == "<=" || a.lexeme_word == "=>") {
-    cout << a.lexeme_word << " ";
+    outputfile << "<Relop> ::=        ==   |   !=    |   >     |   <    |  <=   |    => \n\n";
+    //cout << a.lexeme_word << " ";
 
+  }
+  else {
+    outputfile << "What was expected were '==', '!=', '>', '<', '<=', or '=>'\n";
   }
 }
 
@@ -473,19 +551,26 @@ void If_prime(){
   a = Lexer();
 
   if(a.lexeme_word == "endif"){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
   }
 
   else if (a.lexeme_word == "else"){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Statement();
 
     if (scanned_used == 1){
     a = Lexer();
     }
     if (a.lexeme_word == "endif"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
     }
+    else {
+      outputfile << "What was expected was an 'endif'\n";
+
+    }
+  }
+  else {
+    outputfile << "What was expected was an 'else'\n";
   }
 }
 
@@ -493,7 +578,7 @@ void Return(){
   a = Lexer();
 
   if( a.lexeme_word == ";"){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
   }
   else if ( a.lexeme_word != ";"){
     holding_something2 = 1;
@@ -501,7 +586,8 @@ void Return(){
     Expression();
   //  a = Lexer();
     if ( a.lexeme_word == ";"){
-      cout << a.lexeme_word << " ";
+      outputfile << "What was expected was an ';'\n";
+      //cout << a.lexeme_word << " ";
 
     }
   }
@@ -511,17 +597,26 @@ void Print(){
   a = Lexer();
 
   if (a.lexeme_word == "("){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Expression();
 
 
     if (a.lexeme_word == ")"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
       a = Lexer();
       if ( a.lexeme_word == ";"){
-        cout << a.lexeme_word << " ";
+        //cout << a.lexeme_word << " ";
+      }
+      else {
+        outputfile << "What was expected was an ';'\n";
       }
     }
+    else {
+      outputfile << "What was expected was an ')'\n";
+    }
+  }
+  else {
+    outputfile << "What was expected was an '('\n";
   }
 }
 
@@ -529,18 +624,27 @@ void Scan(){
   a = Lexer();
 
   if (a.lexeme_word == "("){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     IDs();
 
     a = Lexer();
     if (a.lexeme_word == ")"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
       a = Lexer();
       if ( a.lexeme_word == ";"){
-        cout << a.lexeme_word << " ";
+        //cout << a.lexeme_word << " ";
         scanned_used = 1;
       }
+      else {
+        outputfile << "What was expected was an ';'\n";
+      }
     }
+    else {
+      outputfile << "What was expected was an ')'\n";
+    }
+  }
+  else {
+    outputfile << "What was expected was an '('\n";
   }
 }
 
@@ -548,22 +652,31 @@ void While(){
   a = Lexer();
 
   if(a.lexeme_word == "("){
-    cout << a.lexeme_word << " ";
+    //cout << a.lexeme_word << " ";
     Condition();
 
   //May or May Not Need It
   //  a = Lexer();
 
     if(a.lexeme_word == ")"){
-      cout << a.lexeme_word << " ";
+      //cout << a.lexeme_word << " ";
       Statement();
 
 
 
       if ( a.lexeme_word == ";"){
-        cout << a.lexeme_word << " ";
+        //cout << a.lexeme_word << " ";
+      }
+      else {
+        outputfile << "What was expected was an ';'\n";
       }
     }
+    else {
+      outputfile << "What was expected was an ')'\n";
+    }
+  }
+  else {
+    outputfile << "What was expected was an '('\n";
   }
 }
 

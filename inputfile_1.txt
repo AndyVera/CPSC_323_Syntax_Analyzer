@@ -1,14 +1,10 @@
-function Andy ( number integer , number2 integer , number7 boolean )
-boolean number3 ;
-integer number8 ;
+function convert_temp ( fahr integer )
+integer degree ;
 {
-if ( numbers <= 5 )
-number1 = 15
-endif
+degree = 15 + 30 ;
 }
 #
-boolean number ;
 integer number2 ;
 real number3 ;
-Andy = 5 + 10 + 15 ;
+number2 = 25 + 10 ;
 #

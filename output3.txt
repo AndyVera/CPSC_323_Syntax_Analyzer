@@ -1,0 +1,130 @@
+----Lexeme: function          Token: Keyword----
+<Opt Function Definitions> ::= <Function Definitions>  |  <Empty>
+<Function Definitions> ::= <Function> | <Function> <Function Definitions>
+function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
+
+----Lexeme: checking__input   Token: Identifier----
+function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
+
+----Lexeme: (                 Token: Separator----
+function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
+
+----Lexeme: value1            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+----Lexeme: integer           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+<Opt Parameter List> ::=  <Parameter List>    |     <Empty>
+<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>
+<Parameter> ::=  <IDs >  <Qualifier
+
+----Lexeme: ,                 Token: Separator----
+----Lexeme: value2            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+----Lexeme: real              Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+<Opt Parameter List> ::=  <Parameter List>    |     <Empty>
+<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>
+<Parameter> ::=  <IDs >  <Qualifier
+
+----Lexeme: ,                 Token: Separator----
+----Lexeme: value3            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+----Lexeme: boolean           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+<Opt Parameter List> ::=  <Parameter List>    |     <Empty>
+<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>
+<Parameter> ::=  <IDs >  <Qualifier
+
+----Lexeme: )                 Token: Separator----
+function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
+
+----Lexeme: boolean           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+----Lexeme: result            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+<Opt Declaration List> ::= <Declaration List>   |    <Empty>
+<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
+<Declaration> ::=   <Qualifier > <IDs>
+
+----Lexeme: ;                 Token: Separator----
+----Lexeme: integer           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+----Lexeme: value4            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+<Opt Declaration List> ::= <Declaration List>   |    <Empty>
+<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
+<Declaration> ::=   <Qualifier > <IDs>
+
+----Lexeme: ;                 Token: Separator----
+----Lexeme: real              Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+----Lexeme: value10           Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+<Opt Declaration List> ::= <Declaration List>   |    <Empty>
+<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
+<Declaration> ::=   <Qualifier > <IDs>
+
+----Lexeme: ;                 Token: Separator----
+----Lexeme: boolean           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+----Lexeme: is__open          Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+<Opt Declaration List> ::= <Declaration List>   |    <Empty>
+<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
+<Declaration> ::=   <Qualifier > <IDs>
+
+----Lexeme: ;                 Token: Separator----
+----Lexeme: {                 Token: Separator----
+<Body>  ::=  {  < Statement List>  }
+
+<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
+
+<Compound> ::=   {  <Statement List>  }
+
+----Lexeme: if                Token: Keyword----
+<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
+
+----Lexeme: (                 Token: Separator----
+<Condition> ::=     <Expression>  <Relop>   <Expression>
+
+----Lexeme: value3            Token: Identifier----
+<Expression>  ::=    <Term> <Expression’>   |    <Term>
+<Term>    ::=     <Factor> <Term’>    |   <Factor>
+<Factor> ::= <Primary>
+<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
+
+----Lexeme: ==                Token: Operator----
+<Relop> ::=        ==   |   !=    |   >     |   <    |  <=   |    => 
+
+----Lexeme: true              Token: Keyword----
+<Expression>  ::=    <Term> <Expression’>   |    <Term>
+<Term>    ::=     <Factor> <Term’>    |   <Factor>
+<Factor> ::= <Primary>
+<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
+
+----Lexeme: )                 Token: Separator----
+----Lexeme: result            Token: Identifier----
+<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
+
+----Lexeme: =                 Token: Operator----
+<Assign> ::=     <Identifier> = <Expression>
+
+----Lexeme: false             Token: Keyword----
+<Expression>  ::=    <Term> <Expression’>   |    <Term>
+<Term>    ::=     <Factor> <Term’>    |   <Factor>
+<Factor> ::= <Primary>
+<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
+
+what was expected was an ';'
+----Lexeme: ;                 Token: Separator----
+What was expected was an 'else'
+----Lexeme: else              Token: Keyword----
+What was expected was a '}'
+----Lexeme: value             Token: Identifier----

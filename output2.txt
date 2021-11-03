@@ -3,13 +3,13 @@
 <Function Definitions> ::= <Function> | <Function> <Function Definitions>
 function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
 
-----Lexeme: convert__temp     Token: Identifier----
+----Lexeme: Andy              Token: Identifier----
 function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
 
 ----Lexeme: (                 Token: Separator----
 function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>
 
-----Lexeme: fahr              Token: Identifier----
+----Lexeme: number            Token: Identifier----
 <IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
 ----Lexeme: integer           Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
@@ -24,7 +24,7 @@ function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body
 ----Lexeme: integer           Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
 
-----Lexeme: degree            Token: Identifier----
+----Lexeme: number8           Token: Identifier----
 <IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
 <Opt Declaration List> ::= <Declaration List>   |    <Empty>
 <Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
@@ -38,7 +38,29 @@ function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body
 
 <Compound> ::=   {  <Statement List>  }
 
-----Lexeme: degree            Token: Identifier----
+----Lexeme: if                Token: Keyword----
+<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
+
+----Lexeme: (                 Token: Separator----
+<Condition> ::=     <Expression>  <Relop>   <Expression>
+
+----Lexeme: numbers           Token: Identifier----
+<Expression>  ::=    <Term> <Expression’>   |    <Term>
+<Term>    ::=     <Factor> <Term’>    |   <Factor>
+<Factor> ::= <Primary>
+<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
+
+----Lexeme: <=                Token: Operator----
+<Relop> ::=        ==   |   !=    |   >     |   <    |  <=   |    => 
+
+----Lexeme: 5                 Token: Integer----
+<Expression>  ::=    <Term> <Expression’>   |    <Term>
+<Term>    ::=     <Factor> <Term’>    |   <Factor>
+<Factor> ::= <Primary>
+<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
+
+----Lexeme: )                 Token: Separator----
+----Lexeme: number1           Token: Identifier----
 <Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
 
 ----Lexeme: =                 Token: Operator----
@@ -50,19 +72,20 @@ function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body
 <Factor> ::= <Primary>
 <Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
 
-----Lexeme: +                 Token: Operator----
-Expression>  ::=    <Term> <Expression’>   |    <Term>
-<Expression’> ::= + <Term> <Expression’> | -  <Term> <Expression’> | ε
-
-----Lexeme: 30                Token: Integer----
-<Expression>  ::=    <Term> <Expression’>   |    <Term>
-<Term>    ::=     <Factor> <Term’>    |   <Factor>
-<Factor> ::= <Primary>
-<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
-
-----Lexeme: ;                 Token: Separator----
+what was expected was an ';'
+----Lexeme: endif             Token: Keyword----
 ----Lexeme: }                 Token: Separator----
 ----Lexeme: #                 Token: Separator----
+----Lexeme: boolean           Token: Keyword----
+<Qualifier> ::= integer    |    boolean    |  real
+
+----Lexeme: number            Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+<Opt Declaration List> ::= <Declaration List>   |    <Empty>
+<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>
+<Declaration> ::=   <Qualifier > <IDs>
+
+----Lexeme: ;                 Token: Separator----
 ----Lexeme: integer           Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
 
@@ -89,21 +112,16 @@ Expression>  ::=    <Term> <Expression’>   |    <Term>
 ----Lexeme: =                 Token: Operator----
 <Assign> ::=     <Identifier> = <Expression>
 
-----Lexeme: 25                Token: Integer----
+----Lexeme: Andy              Token: Identifier----
 <Expression>  ::=    <Term> <Expression’>   |    <Term>
 <Term>    ::=     <Factor> <Term’>    |   <Factor>
 <Factor> ::= <Primary>
 <Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
 
-----Lexeme: +                 Token: Operator----
-Expression>  ::=    <Term> <Expression’>   |    <Term>
-<Expression’> ::= + <Term> <Expression’> | -  <Term> <Expression’> | ε
-
-----Lexeme: 10                Token: Integer----
-<Expression>  ::=    <Term> <Expression’>   |    <Term>
-<Term>    ::=     <Factor> <Term’>    |   <Factor>
-<Factor> ::= <Primary>
-<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
-
+----Lexeme: (                 Token: Separator----
+----Lexeme: number3           Token: Identifier----
+<IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+----Lexeme: )                 Token: Separator----
+what was expected was an ';'
 ----Lexeme: ;                 Token: Separator----
-----Lexeme: #                 Token: Separator----
+What was expected was a #

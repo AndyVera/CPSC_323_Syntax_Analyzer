@@ -1,0 +1,20 @@
+function checking_input ( value1 integer , value2 real , value3 boolean )
+boolean result ;
+integer value4 ;
+real value10 ;
+boolean is_open ;
+{
+if ( value3 == true )
+result = false ;
+else
+value 3 = 22 / 7 ;
+endif
+}
+#
+real value5 ;
+integer value6 ;
+boolean value7 ;
+integer value11 ;
+while ( value5 == value 6 )
+number11 = 2 + 4 + 6 + 8 ;
+#
