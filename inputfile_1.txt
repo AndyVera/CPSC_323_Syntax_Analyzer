@@ -1,1 +1,14 @@
-function Andy ( number integer , number2 integer )
+function Andy ( number integer , number2 integer , number7 boolean )
+boolean number3 ;
+integer number8 ;
+{
+if ( numbers <= 5 )
+number1 = 15
+endif
+}
+#
+boolean number ;
+integer number2 ;
+real number3 ;
+Andy = 5 + 10 + 15 ;
+#
