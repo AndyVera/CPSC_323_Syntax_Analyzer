@@ -1,3 +1,4 @@
+
 ----Lexeme: function          Token: Keyword----
 <Opt Function Definitions> ::= <Function Definitions>  |  <Empty>
 <Function Definitions> ::= <Function> | <Function> <Function Definitions>
@@ -11,9 +12,9 @@ function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body
 
 ----Lexeme: fahr              Token: Identifier----
 <IDs> ::=     <Identifier>    | <Identifier>, <IDs> 
+
 ----Lexeme: integer           Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
-
 <Opt Parameter List> ::=  <Parameter List>    |     <Empty>
 <Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>
 <Parameter> ::=  <IDs >  <Qualifier
@@ -31,11 +32,10 @@ function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body
 <Declaration> ::=   <Qualifier > <IDs>
 
 ----Lexeme: ;                 Token: Separator----
+
 ----Lexeme: {                 Token: Separator----
 <Body>  ::=  {  < Statement List>  }
-
 <Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
-
 <Compound> ::=   {  <Statement List>  }
 
 ----Lexeme: degree            Token: Identifier----
@@ -61,8 +61,11 @@ Expression>  ::=    <Term> <Expression’>   |    <Term>
 <Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
 
 ----Lexeme: ;                 Token: Separator----
+
 ----Lexeme: }                 Token: Separator----
+
 ----Lexeme: #                 Token: Separator----
+
 ----Lexeme: integer           Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
 
@@ -73,6 +76,7 @@ Expression>  ::=    <Term> <Expression’>   |    <Term>
 <Declaration> ::=   <Qualifier > <IDs>
 
 ----Lexeme: ;                 Token: Separator----
+
 ----Lexeme: real              Token: Keyword----
 <Qualifier> ::= integer    |    boolean    |  real
 
@@ -83,6 +87,7 @@ Expression>  ::=    <Term> <Expression’>   |    <Term>
 <Declaration> ::=   <Qualifier > <IDs>
 
 ----Lexeme: ;                 Token: Separator----
+
 ----Lexeme: number2           Token: Identifier----
 <Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> 
 
@@ -106,4 +111,5 @@ Expression>  ::=    <Term> <Expression’>   |    <Term>
 <Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false 
 
 ----Lexeme: ;                 Token: Separator----
+
 ----Lexeme: #                 Token: Separator----

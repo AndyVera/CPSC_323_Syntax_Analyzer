@@ -76,6 +76,7 @@ void Rat21F (){
       //cout << a.lexeme_word << " ";
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was a #\n";
     }
   }
@@ -100,19 +101,19 @@ void Function() {
   if (a.lexeme_word == "function"){
     outputfile << "<Opt Function Definitions> ::= <Function Definitions>  |  <Empty>\n";
     outputfile << "<Function Definitions> ::= <Function> | <Function> <Function Definitions>\n";
-    outputfile << "function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+    outputfile << "function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
     //cout << a.lexeme_word << " ";
     a = Lexer();
 
     //Inner Loop 2
     if (a.lexeme_token == "Identifier"){
-      outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+      outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
       //cout << a.lexeme_word << " ";
       a = Lexer();
 
       //Inner Loop 1
       if (a.lexeme_word == "("){
-        outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+        outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
         //cout << a.lexeme_word << " ";
         Opt_Parameter_List();
 
@@ -121,17 +122,20 @@ void Function() {
         ////cout << "\nlexeme after coming from Opt_Parameter_List is: " << a.lexeme_word << "--\n";
 
         if ( a.lexeme_word == ")"){
-          outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n\n";
+          outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
           //cout << a.lexeme_word << " ";
           Opt_Decleration_List();
 
           Body();
         }
         else {
+
+          outputfile << "Error in Line: " << line_number << '\n';
           outputfile << "What was expected was a ')'\n";
         }
       }
       else {
+        outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected is a '('\n";
       }
       //End of Inner Loop 1
@@ -139,12 +143,14 @@ void Function() {
 
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected is an 'Identifier'\n";
     }
     //End of Inner Loop 2
   }
 
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was the keyword 'function'\n";
   }
 }
@@ -170,7 +176,7 @@ void Parameter(){
   Qualifier();
   outputfile << "<Opt Parameter List> ::=  <Parameter List>    |     <Empty>\n";
   outputfile << "<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>\n";
-  outputfile << "<Parameter> ::=  <IDs >  <Qualifier\n\n";
+  outputfile << "<Parameter> ::=  <IDs >  <Qualifier\n";
 }
 
 void IDs(){
@@ -184,7 +190,8 @@ void IDs(){
   }
 
   else {
-    outputfile << "What was expected is an 'Identifier'\n\n";
+    outputfile << "Error in Line: " << line_number << '\n';
+    outputfile << "What was expected is an 'Identifier'\n";
   }
 }
 void Qualifier(){
@@ -198,10 +205,11 @@ void Qualifier(){
   }
 
   if (a.lexeme_word == "integer" || a.lexeme_word == "boolean" || a.lexeme_word == "real"){
-    outputfile << "<Qualifier> ::= integer    |    boolean    |  real\n\n";
+    outputfile << "<Qualifier> ::= integer    |    boolean    |  real\n";
     //cout << a.lexeme_word << " ";
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was either an 'integer', 'boolean', or 'real'\n";
   }
 }
@@ -224,7 +232,7 @@ void Decleration(){
   IDs();
   outputfile << "<Opt Declaration List> ::= <Declaration List>   |    <Empty>\n";
   outputfile << "<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>\n";
-  outputfile << "<Declaration> ::=   <Qualifier > <IDs>\n\n";
+  outputfile << "<Declaration> ::=   <Qualifier > <IDs>\n";
 
   second_time = 0;
   a = Lexer();
@@ -244,6 +252,7 @@ void Decleration(){
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was a ';'\n";
   }
 }
@@ -252,7 +261,7 @@ void Body(){
   a = temp;
   ////cout << "\nTesting: " << a.lexeme_word << "\n";
   if ( a.lexeme_word == "{"){
-    outputfile << "<Body>  ::=  {  < Statement List>  }\n\n";
+    outputfile << "<Body>  ::=  {  < Statement List>  }\n";
     //cout << a.lexeme_word << " ";
     Statement_List();
 
@@ -261,10 +270,12 @@ void Body(){
         //cout << a.lexeme_word << " ";
       }
       else {
+        outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected was a '}'\n";
       }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was a '{'\n";
   }
 }
@@ -284,48 +295,49 @@ void Statement(){
 
   ////cout << "\ntesting: " << a.lexeme_word << "\n";
     if (a.lexeme_word == "{"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       Compound();
     }
     else if (a.lexeme_token == "Identifier"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       Assign();
     }
     else if (a.lexeme_word == "if"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       If();
     }
     else if (a.lexeme_word == "return"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       Return();
     }
     else if (a.lexeme_word == "put"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       Print();
     }
     else if (a.lexeme_word == "get"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       Scan();
     }
     else if (a.lexeme_word == "while"){
-      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n\n";
+      outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
       While();
     }
     else if (a.lexeme_word != "{" && a.lexeme_token != "Identifier" && a.lexeme_word != "if" && a.lexeme_word != "return" && a.lexeme_word != "put" && a.lexeme_word != "get" && a.lexeme_word != "while" ){
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
 
     }
 }
 
 void Compound(){
-  outputfile << "<Compound> ::=   {  <Statement List>  }\n\n";
+  outputfile << "<Compound> ::=   {  <Statement List>  }\n";
   Statement_List();
 }
 
@@ -333,7 +345,7 @@ void Assign() {
   a = Lexer();
 
   if (a.lexeme_word == "="){
-    outputfile << "<Assign> ::=     <Identifier> = <Expression>\n\n";
+    outputfile << "<Assign> ::=     <Identifier> = <Expression>\n";
     //cout << a.lexeme_word << " ";
     Expression();
 
@@ -348,10 +360,12 @@ void Assign() {
       //cout << a.lexeme_word << " ";
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "what was expected was an ';'\n";
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was a '='\n";
   }
 }
@@ -383,14 +397,14 @@ void Primary(){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
   }
   else if (a.lexeme_word == "("){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
     Expression();
   }
@@ -398,28 +412,28 @@ void Primary(){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
   }
   else if ( a.lexeme_word == "true"){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
   }
   else if ( a.lexeme_word == "false"){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
   }
   else if (a.lexeme_token == "Identifier"){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
     outputfile << "<Factor> ::= <Primary>\n";
-    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n\n";
+    outputfile << "<Primary> ::=     <Identifier>  |  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false \n";
     //cout << a.lexeme_word << " ";
     a = Lexer();
     holding_something = 1;
@@ -435,6 +449,7 @@ void Primary(){
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected are either 'Integer', '(', 'Real', 'true', 'false', or an 'Identifier'\n";
   }
 
@@ -452,7 +467,7 @@ void Term_prime(){
   if(a.lexeme_word == "*" || a.lexeme_word == "/"){
     outputfile << "<Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
     outputfile << "<Term>    ::=     <Factor> <Term’>    |   <Factor>\n";
-    outputfile << "<Term’> ::= * <Factor> <Term’> | / <Factor> <Term’> | ε\n\n";
+    outputfile << "<Term’> ::= * <Factor> <Term’> | / <Factor> <Term’> | ε\n";
     //cout << a.lexeme_word << " ";
     holding_something = 0;
     Factor();
@@ -474,7 +489,7 @@ void Expression_prime (){
 
   if(a.lexeme_word == "+" || a.lexeme_word == "-"){
     outputfile << "Expression>  ::=    <Term> <Expression’>   |    <Term>\n";
-    outputfile << "<Expression’> ::= + <Term> <Expression’> | -  <Term> <Expression’> | ε\n\n";
+    outputfile << "<Expression’> ::= + <Term> <Expression’> | -  <Term> <Expression’> | ε\n";
     //cout << a.lexeme_word << " " ;
     holding_something = 0;
     Term();
@@ -495,14 +510,6 @@ void If(){
     //cout << a.lexeme_word << " ";
     Condition();
 
-    //a = Lexer(); //NOTE: MAY OR MAY NOT NEED IT)
-
-    //This if statement is for when its another Identifier after the relop
-    // if(holding_something == 1){
-    //   a = temp4;
-    //   holding_something = 0;
-    // }
-
     if (a.lexeme_word == ")"){
       //cout << a.lexeme_word << " ";
       Statement();
@@ -510,16 +517,18 @@ void If(){
 
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was ')'\n";
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was '('\n";
   }
 }
 
 void Condition(){
-  outputfile << "<Condition> ::=     <Expression>  <Relop>   <Expression>\n\n";
+  outputfile << "<Condition> ::=     <Expression>  <Relop>   <Expression>\n";
   Expression();
   Relop();
   Expression();
@@ -537,11 +546,12 @@ void Relop(){
   //NOTE: WITHINT THE CONDITION STATEMENT, EVERYTHING NEEDS TO BE ONE SPACE APART
 
   if (a.lexeme_word == "==" || a.lexeme_word == "!=" || a.lexeme_word == ">" || a.lexeme_word == "<" || a.lexeme_word == "<=" || a.lexeme_word == "=>") {
-    outputfile << "<Relop> ::=        ==   |   !=    |   >     |   <    |  <=   |    => \n\n";
+    outputfile << "<Relop> ::=        ==   |   !=    |   >     |   <    |  <=   |    => \n";
     //cout << a.lexeme_word << " ";
 
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected were '==', '!=', '>', '<', '<=', or '=>'\n";
   }
 }
@@ -565,11 +575,13 @@ void If_prime(){
       //cout << a.lexeme_word << " ";
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was an 'endif'\n";
 
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was an 'else'\n";
   }
 }
@@ -586,6 +598,7 @@ void Return(){
     Expression();
   //  a = Lexer();
     if ( a.lexeme_word == ";"){
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was an ';'\n";
       //cout << a.lexeme_word << " ";
 
@@ -608,14 +621,17 @@ void Print(){
         //cout << a.lexeme_word << " ";
       }
       else {
+        outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected was an ';'\n";
       }
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was an ')'\n";
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was an '('\n";
   }
 }
@@ -636,14 +652,17 @@ void Scan(){
         scanned_used = 1;
       }
       else {
+        outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected was an ';'\n";
       }
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was an ')'\n";
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was an '('\n";
   }
 }
@@ -662,25 +681,22 @@ void While(){
       //cout << a.lexeme_word << " ";
       Statement();
 
-
-
       if ( a.lexeme_word == ";"){
         //cout << a.lexeme_word << " ";
       }
       else {
+        outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected was an ';'\n";
       }
     }
     else {
+      outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was an ')'\n";
     }
   }
   else {
+    outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was an '('\n";
   }
 }
-
-
-
-
 #endif /*SyntaxAnalyzerFunctions_h*/

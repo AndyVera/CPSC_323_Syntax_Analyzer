@@ -15,6 +15,7 @@ string lexeme_string_source;
 string::iterator ptr;
 char lexeme_string_input;
 int index___ = 0;
+int line_number = 0;
 
 struct Lexeme {
   string lexeme_word;
@@ -185,6 +186,9 @@ Lexeme Lexer() {
 
     //If its a white space, then stop lexer and identify lexeme
     if(*ptr == ' ' || *ptr == '\n'){
+      if( *ptr == '\n'){
+        line_number += 1;
+      }
       break;
     }
 
@@ -205,7 +209,7 @@ Lexeme Lexer() {
       int sep_index, op_index;
       for(int i = 0; i <= 6; ++i){
         if( separators[i] == lexeme_string){
-          outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Separator----\n";
+          outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Separator----\n";
           lexeme_output.lexeme_word = lexeme_string;
           lexeme_output.lexeme_token = "Separator";
           break;
@@ -214,7 +218,7 @@ Lexeme Lexer() {
       }
       for(int j = 0; j <= 10; ++j){
         if(operators[j] == lexeme_string){
-          outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Operator----\n";
+          outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Operator----\n";
           lexeme_output.lexeme_word = lexeme_string;
           lexeme_output.lexeme_token = "Operator";
           break;
@@ -222,7 +226,7 @@ Lexeme Lexer() {
         op_index = j + 1;
       }
       if (op_index == 11 && sep_index == 7){
-          outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid----\n";
+          outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid----\n";
           lexeme_output.lexeme_word = lexeme_string;
           lexeme_output.lexeme_token = "Invalid";
       }
@@ -234,7 +238,7 @@ Lexeme Lexer() {
 
       for (int i = 0; i < 14; ++i){
         if(keywords[i] == lexeme_string){
-          outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword----\n";
+          outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Keyword----\n";
           lexeme_output.lexeme_word = lexeme_string;
           lexeme_output.lexeme_token = "Keyword";
           break;
@@ -243,7 +247,7 @@ Lexeme Lexer() {
       }
 
       if (index___ == 14){
-        outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier----\n";
+        outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Identifier----\n";
         lexeme_output.lexeme_word = lexeme_string;
         lexeme_output.lexeme_token = "Identifier";
       }
@@ -251,7 +255,7 @@ Lexeme Lexer() {
 
     //Checks if its an integer
     if (current_state == 2){
-      outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer----\n";
+      outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Integer----\n";
       lexeme_output.lexeme_word = lexeme_string;
       lexeme_output.lexeme_token = "Integer";
 
@@ -259,14 +263,14 @@ Lexeme Lexer() {
 
     //Checks if its an Invalid token
     if (current_state == 3){
-      outputfile << "----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid----\n";
+      outputfile << "\n----Lexeme: " << setw(16) << left << lexeme_string << "  Token: Invalid----\n";
       lexeme_output.lexeme_word = lexeme_string;
       lexeme_output.lexeme_token = "Invalid";
     }
 
     //Checks if its a Real
     if(current_state == 4){
-      outputfile << "----Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real----\n";
+      outputfile << "\n----Lexeme: " << setw(16) <<  left <<lexeme_string << "  Token: Real----\n";
       lexeme_output.lexeme_word = lexeme_string;
       lexeme_output.lexeme_token = "Real";
 
