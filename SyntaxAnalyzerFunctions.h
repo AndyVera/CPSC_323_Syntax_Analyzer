@@ -7,7 +7,7 @@
 #ifndef SyntaxAnalyzerFunctions_h
 #define SyntaxAnalyzerFunctions_h
 
-
+//Lexem structs used during SA
 Lexeme a;
 Lexeme temp;
 Lexeme temp2;
@@ -15,6 +15,7 @@ Lexeme temp3;
 Lexeme temp4;
 Lexeme temp5;
 
+// Flags that aid if there are any saved values and other functions
 int second_time = 0;
 int holding_something = 0;
 int holding_something2 = 0;
@@ -60,7 +61,7 @@ void Primary ();
 
 //The Syntax Functions implemented
 
-//
+// Rule 1: Starts the Syntax Analyzer
 void Rat21F (){
   Opt_Function_Definitions();
 
@@ -76,6 +77,7 @@ void Rat21F (){
       //cout << a.lexeme_word << " ";
     }
     else {
+      //Error Messages
       outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected was a #\n";
     }
@@ -87,18 +89,21 @@ void Rat21F (){
 
 }
 
+//Rule 2
 void Opt_Function_Definitions(){
   Function_Definitions();
 }
-
+//Rule 3
 void Function_Definitions(){
   Function();
 }
 
+//Rule 4
 void Function() {
  a = Lexer();
 
   if (a.lexeme_word == "function"){
+    // Prints Syntax Rules
     outputfile << "<Opt Function Definitions> ::= <Function Definitions>  |  <Empty>\n";
     outputfile << "<Function Definitions> ::= <Function> | <Function> <Function Definitions>\n";
     outputfile << "function  <Identifier> ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
@@ -107,12 +112,14 @@ void Function() {
 
     //Inner Loop 2
     if (a.lexeme_token == "Identifier"){
+      // Prints Syntax Rules
       outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
       //cout << a.lexeme_word << " ";
       a = Lexer();
 
       //Inner Loop 1
       if (a.lexeme_word == "("){
+        // Prints Syntax Rules
         outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
         //cout << a.lexeme_word << " ";
         Opt_Parameter_List();
@@ -122,6 +129,7 @@ void Function() {
         ////cout << "\nlexeme after coming from Opt_Parameter_List is: " << a.lexeme_word << "--\n";
 
         if ( a.lexeme_word == ")"){
+          // Prints Syntax Rules
           outputfile << "function  <Identifier>   ( <Opt Parameter List> )  <Opt Declaration List>  <Body>\n";
           //cout << a.lexeme_word << " ";
           Opt_Decleration_List();
@@ -129,12 +137,13 @@ void Function() {
           Body();
         }
         else {
-
+          // Error Messages
           outputfile << "Error in Line: " << line_number << '\n';
           outputfile << "What was expected was a ')'\n";
         }
       }
       else {
+        // Error Messages
         outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected is a '('\n";
       }
@@ -143,6 +152,7 @@ void Function() {
 
     }
     else {
+      // Error Messages
       outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected is an 'Identifier'\n";
     }
@@ -150,15 +160,16 @@ void Function() {
   }
 
   else {
+    // Error Messages
     outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was the keyword 'function'\n";
   }
 }
-
+//Rule 5
 void Opt_Parameter_List(){
   Parameter_List();
 }
-
+//Rule 6
 void Parameter_List(){
   Parameter();
 
@@ -170,10 +181,11 @@ void Parameter_List(){
     Parameter_List();
   }
 }
-
+//Rule 7
 void Parameter(){
   IDs();
   Qualifier();
+  //Prints out Syntax Rules
   outputfile << "<Opt Parameter List> ::=  <Parameter List>    |     <Empty>\n";
   outputfile << "<Parameter List>  ::=  <Parameter>    |     <Parameter> , <Parameter List>\n";
   outputfile << "<Parameter> ::=  <IDs >  <Qualifier\n";
@@ -185,15 +197,18 @@ void IDs(){
     // cout << "\nTesting IDs output: " << ""
 
   if (a.lexeme_token == "Identifier"){
+      //Prints out Syntax Rules
       outputfile << "<IDs> ::=     <Identifier>    | <Identifier>, <IDs> \n";
       //cout << a.lexeme_word << " ";
   }
 
   else {
+    //Prints out Error Messages
     outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected is an 'Identifier'\n";
   }
 }
+//Rule 8
 void Qualifier(){
 
   if ( second_time == 0){
@@ -205,31 +220,37 @@ void Qualifier(){
   }
 
   if (a.lexeme_word == "integer" || a.lexeme_word == "boolean" || a.lexeme_word == "real"){
+    //Prints out Syntax Rules
     outputfile << "<Qualifier> ::= integer    |    boolean    |  real\n";
     //cout << a.lexeme_word << " ";
   }
   else {
+    //Print out Error Message
     outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was either an 'integer', 'boolean', or 'real'\n";
   }
 }
 
+//Rule 10
 void Opt_Decleration_List(){
   //cout << "\nWorking #8\n";
   Decleration_list();
 }
 
+//Rule 11
 void Decleration_list(){
   //cout << "Working #9\n";
   Decleration();
 }
 
+//Rule 12
 void Decleration(){
   //cout << "Working #10\n";
     //cout << "\n";
 
   Qualifier();
   IDs();
+  //Prints out Syntax Rules
   outputfile << "<Opt Declaration List> ::= <Declaration List>   |    <Empty>\n";
   outputfile << "<Declaration List>  := <Declaration> ;     |     <Declaration> ; <Declaration List>\n";
   outputfile << "<Declaration> ::=   <Qualifier > <IDs>\n";
@@ -252,15 +273,18 @@ void Decleration(){
     }
   }
   else {
+    //Prints out Error Message
     outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was a ';'\n";
   }
 }
 
+//Rule 9
 void Body(){
   a = temp;
   ////cout << "\nTesting: " << a.lexeme_word << "\n";
   if ( a.lexeme_word == "{"){
+    //Prints out Syntax Rule
     outputfile << "<Body>  ::=  {  < Statement List>  }\n";
     //cout << a.lexeme_word << " ";
     Statement_List();
@@ -270,20 +294,23 @@ void Body(){
         //cout << a.lexeme_word << " ";
       }
       else {
+        //Error Message
         outputfile << "Error in Line: " << line_number << '\n';
         outputfile << "What was expected was a '}'\n";
       }
   }
   else {
+    //Error Message
     outputfile << "Error in Line: " << line_number << '\n';
     outputfile << "What was expected was a '{'\n";
   }
 }
-
+//Rule 14
 void Statement_List(){
   Statement();
 }
 
+//Rule 15
 void Statement(){
   if (holding_something4 == 1){
     a = temp;
@@ -299,6 +326,7 @@ void Statement(){
       //cout << a.lexeme_word << " ";
       Compound();
     }
+    //when analyzing the lexeme it will go to the appropriate function/syntax rule
     else if (a.lexeme_token == "Identifier"){
       outputfile << "<Statement> ::=   <Compound>  |  <Assign>  |   <If>  |  <Return>   | <Print>   |   <Scan>   |  <While> \n";
       //cout << a.lexeme_word << " ";
@@ -330,17 +358,18 @@ void Statement(){
       While();
     }
     else if (a.lexeme_word != "{" && a.lexeme_token != "Identifier" && a.lexeme_word != "if" && a.lexeme_word != "return" && a.lexeme_word != "put" && a.lexeme_word != "get" && a.lexeme_word != "while" ){
+      //Error Message
       outputfile << "Error in Line: " << line_number << '\n';
       outputfile << "What was expected were either '{', an 'Identifier', 'if', 'return', 'put', 'get', or 'while'\n";
 
     }
 }
-
+//Rule 16
 void Compound(){
   outputfile << "<Compound> ::=   {  <Statement List>  }\n";
   Statement_List();
 }
-
+//Rule 17
 void Assign() {
   a = Lexer();
 
@@ -370,20 +399,21 @@ void Assign() {
   }
 }
 
+//Rule 18
 void Expression(){
   Term();
   Expression_prime();
 }
-
+//Rule 28
 void Term(){
   Factor();
   Term_prime();
 }
-
+//Rule 30
 void Factor(){
   Primary();
 }
-
+//Rule 31
 void Primary(){
   if (holding_something2 == 1){
     a = temp5;
@@ -479,6 +509,7 @@ void Term_prime(){
   }
 }
 
+//Rule 27
 void Expression_prime (){
   if (holding_something == 1){
     a = temp;
@@ -501,7 +532,7 @@ void Expression_prime (){
     holding_something3 = 1;
   }
 }
-
+//18
 void If(){
   a = Lexer();
 
@@ -526,7 +557,7 @@ void If(){
     outputfile << "What was expected was '('\n";
   }
 }
-
+//Rule 24
 void Condition(){
   outputfile << "<Condition> ::=     <Expression>  <Relop>   <Expression>\n";
   Expression();
@@ -534,6 +565,7 @@ void Condition(){
   Expression();
 }
 
+//25
 void Relop(){
   if (holding_something == 1 ) {
     a = temp4;
@@ -556,6 +588,7 @@ void Relop(){
   }
 }
 
+//Rule 19
 void If_prime(){
 
   a = Lexer();
@@ -586,6 +619,7 @@ void If_prime(){
   }
 }
 
+//Rule 20
 void Return(){
   a = Lexer();
 
@@ -606,6 +640,7 @@ void Return(){
   }
 }
 
+//Rule 21
 void Print(){
   a = Lexer();
 
@@ -636,6 +671,7 @@ void Print(){
   }
 }
 
+//Rule 22
 void Scan(){
   a = Lexer();
 
@@ -667,6 +703,7 @@ void Scan(){
   }
 }
 
+//Rule 23
 void While(){
   a = Lexer();
 
